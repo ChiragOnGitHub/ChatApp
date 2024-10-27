@@ -1,9 +1,12 @@
 # Website Previews 
 
-Watch a quick demo of the website in action : [Here](https://drive.google.com/file/d/1s46IuLVYVIn2k6K7k4neCmMxmkgz9vWb/view?usp=sharing) 
+Watch a quick demo of the website in action : [Here](https://drive.google.com/file/d/1LByse-cvUNmIeuXZwjwQffn_cRAmfv5y/view?usp=sharing) 
+
+download the compressed video : [Website Preview.mp4](Website%20Preview.mp4)
 
 Watch the website's responsive design in action : [Here](https://drive.google.com/file/d/1aMJATrJT5IJhX_XuOHbF0k4ZBewUHtHf/view?usp=sharing) 
 
+download the compressed video : [Website ResponsiveNature.mp4](/Website%20ResponsiveNature.mp4)
 
 # Run Locally First Time
 
