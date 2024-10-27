@@ -33,7 +33,7 @@ Install dependencies
 Go back to the project directory
 
 ```bash
-  cd loginnest
+  cd ..
 ```
 
 Start the Website
