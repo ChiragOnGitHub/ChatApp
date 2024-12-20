@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { Toaster } from "react-hot-toast";
 
+import ChatProvider from "./Context/ChatProvider";
 import {configureStore} from "@reduxjs/toolkit"
 import rootReducer from "./reducer";
 
@@ -18,8 +19,10 @@ root.render(
     <React.StrictMode>
         <Provider store = {store}>
             <BrowserRouter>
-                <App />
-                <Toaster/>
+                <ChatProvider>
+                    <App />
+                    <Toaster/>
+                </ChatProvider>
             </BrowserRouter>
         </Provider>
     </React.StrictMode>

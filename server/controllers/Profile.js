@@ -60,7 +60,7 @@ exports.deleteAccount = async (req, res) => {
         const id = req.user.id;
         
         const userDetails = await User.findById(id);
-        console.log(userDetails)
+        // console.log(userDetails)
         if(!userDetails) {
             return res.status(404).json({
                 success:false,
@@ -118,7 +118,7 @@ exports.updateDisplayPicture = async (req, res) => {
             displayPicture, process.env.FOLDER_NAME,
             1000, 1000
         )
-        console.log(image)
+        // console.log(image)
 
         const updatedProfile = await User.findByIdAndUpdate(
             { _id: userId },

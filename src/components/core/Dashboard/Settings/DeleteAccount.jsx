@@ -10,11 +10,12 @@ export default function DeleteAccount() {
     const navigate = useNavigate()
     console.log(token);
     async function handleDeleteAccount() {
-        try {
-            dispatch(deleteProfile(token, navigate))
-        } catch (error) {
-            console.log("ERROR MESSAGE - ", error.message)
-        }
+        alert("Feature will be completed Soon")
+        // try {
+        //     dispatch(deleteProfile(token, navigate))
+        // } catch (error) {
+        //     console.log("ERROR MESSAGE - ", error.message)
+        // }
     }
 
     return (

@@ -174,6 +174,19 @@ const Navbar = () => {
                                             </p>
                                         </Link>
                                     </li>
+                                    <li>
+                                        <Link to="/dashboard/chat" onClick={toggleMenu}>
+                                            <p
+                                                className={`flex items-center gap-x-2 ${
+                                                    matchRoute("/dashboard/Chat")
+                                                    ? "text-yellow-25"
+                                                    : "text-richblack-25"
+                                                }`}
+                                            >
+                                                Chat
+                                            </p>
+                                        </Link>
+                                    </li>
                                     
                                     <li>
                                         <div

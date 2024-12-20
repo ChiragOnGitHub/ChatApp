@@ -16,7 +16,7 @@ const OTPSchema = new mongoose.Schema({
         default:Date.now(),
         expires: 5*60,
     }
-});
+},{timestamps:true});
 
 
 //function uses nodemailer (utils -> mailsender) to send mail

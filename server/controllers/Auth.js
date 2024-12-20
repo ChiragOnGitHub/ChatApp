@@ -67,6 +67,30 @@ exports.sendotp = async (req, res) =>  {
 
 };
 
+//search User
+exports.allUsers = async (req, res) => {
+    try{
+        const keyword = req.query.search
+        ? {
+            $or: [
+                { name: { $regex: req.query.search, $options: "i" } },
+                { email: { $regex: req.query.search, $options: "i" } },
+            ],
+            }
+        : {};
+        const users = await User.find(keyword).find({ _id: { $ne: req.user.id } });
+        res.send(users);
+    }
+    catch(error) {
+        console.log(error);
+        return res.status(500).json({
+            success:false,
+            message:"User Not Found",
+        })
+    }
+}
+
+
 //signUp
 exports.signup = async (req, res) => {
     try {
@@ -291,7 +315,7 @@ exports.changePassword = async (req, res) => {
 					`${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`
 				)
 			);
-			console.log("Email sent successfully:", emailResponse.response);
+			// console.log("Email sent successfully:", emailResponse.response);
 		}
         catch (error) {
 			console.error("Error occurred while sending email:", error);

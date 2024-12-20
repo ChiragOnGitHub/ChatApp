@@ -16,6 +16,7 @@ import Error from "./pages/Error"
 
 import Dashboard from "./pages/Dashboard"
 import MyProfile from "./components/core/Dashboard/MyProfile"
+import ChatPage from "./pages/Chatpage";
 import Settings from "./components/core/Dashboard/Settings/index"
 
 import PrivateRoute from "./components/core/Auth/PrivateRoute";
@@ -75,7 +76,15 @@ function App() {
                     }
                 />  
 
+            
+            <Route path="dashboard/Chat" element={
+                <PrivateRoute>
+                    <ChatPage />
+                </PrivateRoute>
+                
+                } 
 
+            />
 
             {/* Private Route - for Only Logged in User */}
             <Route
@@ -87,7 +96,9 @@ function App() {
             >
                 <Route path="dashboard/my-profile" element={<MyProfile />} />
                 <Route path="dashboard/Settings" element={<Settings />} />
+                
             </Route>
+            
 
             {/* 404 Page */}
             <Route path="*" element={<Error />} />

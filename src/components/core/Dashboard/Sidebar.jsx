@@ -29,8 +29,8 @@ export default function Sidebar() {
             <div className="flex h-[calc(100vh-3.5rem)] min-w-[220px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800 py-10">
                 <div className="flex flex-col">
                     <SidebarLink link={{ name: "My Profile", path: "/dashboard/my-profile" }} iconName="VscAccount" />
+                    <SidebarLink link={{ name: "Chat", path: "/dashboard/Chat" }} iconName="VscMail" />
                 </div>
-
                 <div className="mx-auto mt-6 mb-6 h-[1px] w-10/12 bg-richblack-700" />
 
                 <div className="flex flex-col">

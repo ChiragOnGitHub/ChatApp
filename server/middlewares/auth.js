@@ -8,7 +8,7 @@ exports.auth = async (req, res, next) => {
         const token = req.cookies.token 
                         || req.body.token 
                         || req.header("Authorization").replace("Bearer ", "");
-        console.log(token);
+        // console.log(token);
 
         //checking if token is missing
         if(!token) {
@@ -21,8 +21,11 @@ exports.auth = async (req, res, next) => {
         //verifing the token
         try{
             const decodedPayload =  jwt.verify(token, process.env.JWT_SECRET);
-            console.log(decodedPayload);
+            
             req.user = decodedPayload;
+            if (req.user && req.user.id) {
+                req.user._id = req.user.id; // Add _id for consistency
+            }
         }
         catch(err) {
             //verification - issue
