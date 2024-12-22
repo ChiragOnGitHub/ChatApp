@@ -72,3 +72,6 @@ Chat Application
 ![App Screenshot](screenshot/14.png)
 
 [Download and watch the demo of complete chat Application Part](videos/ChatDemo.mp4)
+
+Update :- Also added google signin using passport.js
+![App Screenshot](screenshot/15.png)
