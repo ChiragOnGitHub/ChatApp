@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 
 import { login } from "../../../services/operations/authAPI"
+import { FcGoogle } from "react-icons/fc"
 
 function LoginForm() {
     const navigate = useNavigate()
@@ -87,6 +88,15 @@ function LoginForm() {
             >
                 Sign In
             </button>
+
+            {/* Google Login Button */}
+            <a 
+                href="http://localhost:4000/api/v1/google" 
+                className="mt-4 flex items-center justify-center gap-2 rounded-[8px] bg-white py-[8px] px-[12px] font-medium text-richblack-900 shadow-md"
+            >
+                <FcGoogle fontSize={20} />
+                <span>Login in with Google</span>
+            </a>
         </form>
     )
 }

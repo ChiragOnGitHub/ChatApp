@@ -15,16 +15,25 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true,
         trim:true,
+        unique: true,
     },
     password: {
         type:String,
-        required:true,
+        required: function () {
+            // Required only if Google ID is not provided
+            return !this.googleId;
+          },
     },
     accountType: {
         type:String,
         enum:["Admin", "Student"],
         required:true    
     },
+    googleId : {
+        type:String,
+        default:"",
+    }
+    ,
     token :{
         type:String,
     },

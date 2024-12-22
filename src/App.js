@@ -18,6 +18,7 @@ import Dashboard from "./pages/Dashboard"
 import MyProfile from "./components/core/Dashboard/MyProfile"
 import ChatPage from "./pages/Chatpage";
 import Settings from "./components/core/Dashboard/Settings/index"
+import GoogleAuthRedirect from "./components/GoogleAuthRedirect"
 
 import PrivateRoute from "./components/core/Auth/PrivateRoute";
 
@@ -29,6 +30,7 @@ function App() {
             <Route path="/" element={<Home/>} />
             <Route path="about" element={ <About /> } />  
             <Route path="contact" element={<Contact />} />
+            <Route path="/google-auth" element={<GoogleAuthRedirect />} />
 
             {/* Route must be accessed by Non Logged In User */}
             <Route

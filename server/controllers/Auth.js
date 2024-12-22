@@ -233,6 +233,13 @@ exports.login = async (req, res) => {
                 message:"User is not registrered",
             });
         }
+        
+        if(!user.password && user.googleId){
+            return res.status(401).json({
+                success:false,
+                message:"Use Google For Login",
+            });
+        }
 
         //If password matches then create JWT
         if(await bcrypt.compare(password, user.password)) {
@@ -289,13 +296,23 @@ exports.changePassword = async (req, res) => {
 		// const { oldPassword, newPassword ,confirmNewPassword} = req.body;
 		const { oldPassword, newPassword } = req.body;
 
-		// Validate old password
-		const isPasswordMatch = await bcrypt.compare(oldPassword,userDetails.password);
-		if (!isPasswordMatch) {
-			return res.status(401).json({
-                success: false, message: "Current password is incorrect" 
-            });
-		}
+        if(!userDetails.password  && userDetails.googleId){
+            if(oldPassword!=="1234"){
+                return res.status(401).json({
+                    success: false, message: "Use 1234 as current password" 
+                });
+            }
+        }
+        else{
+            // Validate old password
+            const isPasswordMatch = await bcrypt.compare(oldPassword,userDetails.password);
+            if (!isPasswordMatch) {
+                return res.status(401).json({
+                    success: false, message: "Current password is incorrect" 
+                });
+            }
+        }
+		
 
 
 		// create new encrypted Password and update it

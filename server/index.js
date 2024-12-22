@@ -2,12 +2,15 @@ const express = require("express");
 const http = require("http"); // Added to create an HTTP server
 const socketIo = require("socket.io"); // Added for Socket.IO
 const app = express();
+const passport = require('passport');
+const session = require("express-session");
 
 const userRoutes = require("./routes/User");
 const profileRoutes = require("./routes/Profile");
 const contactUsRoute = require("./routes/Contact");
 const chatRoutes = require("./routes/chatroutes");
 const messageRoutes = require("./routes/messageRoutes");
+const googleRoutes = require("./routes/googleroutes");
 
 const database = require("./config/database");
 const cookieParser = require("cookie-parser");
@@ -19,6 +22,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const PORT = process.env.PORT || 4000;
 
+require("./config/passport");
 database.connect();
 
 //middlewares
@@ -40,7 +44,19 @@ app.use(
 
 cloudinaryConnect();
 
+// Passport and session setup
+app.use(
+    session({
+      secret: process.env.SESSION_SECRET || "your_secret_key",
+      resave: false,
+      saveUninitialized: false,
+    })
+  );
+  app.use(passport.initialize());
+  app.use(passport.session());
+
 //routes
+app.use("/api/v1/google",googleRoutes);
 app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/reach", contactUsRoute);
@@ -64,7 +80,7 @@ const server=app.listen(PORT, () => {
 const io = socketIo(server, { // Attach Socket.IO to the server
 	cors: {
 		origin: "http://localhost:3000",
-        
+        credentials: true,
 	}
 });
 
