@@ -1,77 +1,126 @@
-# Run Locally First Time
 
-Clone the project
+# Run Locally for the First Time
 
-```bash
-  git clone https://github.com/ChiragOnGitHub/ChatApp.git
-```
-
-Go to the project directory
+## Clone the Project
 
 ```bash
-  cd ChatApp
+git clone https://github.com/ChiragOnGitHub/ChatApp.git
 ```
 
-Install dependencies
+## Navigate to the Project Directory
 
 ```bash
-  npm install
-  cd server
-  npm install
+cd ChatApp
 ```
 
-Go back to the project directory
+## Install Dependencies
 
 ```bash
-  cd ..
+npm install
+cd server
+npm install
 ```
 
-Start the Website
+## Go Back to the Project Directory
 
 ```bash
-  npm run dev
+cd ..
 ```
+
+## Start the Website
+
+```bash
+npm run dev
+```
+
+---
+
+# Environment Variables
+
+Before running the project, create a `.env` file in the `server` directory. Add the following configuration variables:
+
+```plaintext
+# Mail Configuration for sending OTP
+MAIL_HOST = <your_mail_host>
+MAIL_USER = <your_email_address>
+MAIL_PASS = <your_email_password>
+
+# Authentication and Security
+JWT_SECRET = <your_jwt_secret_key>
+SESSION_SECRET = <your_session_secret_key>
+
+# AWS S3 Configuration (i will use this in next commit )
+AWS_REGION = <your_aws_region>
+AWS_BUCKET_NAME = <your_aws_bucket_name>
+AWS_ACCESS_KEY_ID = <your_aws_access_key_id>
+AWS_SECRET_ACCESS_KEY = <your_aws_secret_access_key>
+
+# Google OAuth Configuration
+CLIENT_ID = <your_google_client_id>
+CLIENT_SECRET = <your_google_client_secret>
+
+# Database and Server Configuration
+MONGODB_URL = <your_mongodb_connection_url>
+PORT = 4000
+
+# Additional Cloudinary (for user profile picture)
+FOLDER_NAME = <your_folder_name>
+CLOUD_NAME = <your_cloudinary_name>
+API_KEY = <your_cloudinary_api_key>
+API_SECRET = <your_cloudinary_api_secret>
+```
+
+---
 
 # Demo
-Screenshots of the website :-
 
-Home page which have an animation created using react-animation-type
+## Screenshots
+
+### Home Page
+Home page with an animation created using `react-animation-type`.
 ![App Screenshot](screenshot/1.png)
 
-About us page will contain information about website for future purpose
+### About Us Page
+The about us page contains information about the website for future purposes.
 ![App Screenshot](screenshot/2.png)
 
-Contact Us Page. It will send confirmation mail to the user using node-mailer after receiving message.
+### Contact Us Page
+The contact page sends a confirmation email to the user using `node-mailer` after receiving a message.
 ![App Screenshot](screenshot/3.png)
 
-Sign Up Page which handles all user error with appropriate toast and send otp to the user.
+### Sign Up Page
+Handles user errors with appropriate toast messages and sends an OTP to the user's email.
 ![App Screenshot](screenshot/4.png)
 ![App Screenshot](screenshot/5.png)
 
-Loading Page
+### Loading Page
 ![App Screenshot](screenshot/6.png)
 
-OTP page
+### OTP Page
 ![App Screenshot](screenshot/7.png)
 
-That's How OTP is visible to user in their mail
+Here is how the OTP appears in the user's mail:
 ![App Screenshot](screenshot/8.png)
 
-Login Page also have forget password page button, which sends mail to reset password.
+### Login Page
+Includes a "Forgot Password" button that sends a reset password link to the user's email.
 ![App Screenshot](screenshot/9.png)
 
-Dashboard After Login where you can see their profile picture, about and personal detials
+### Dashboard
+Displays the user's profile picture, about section, and personal details after login.
 ![App Screenshot](screenshot/10.png)
 ![App Screenshot](screenshot/11.png)
 
-Setting page where user update their profile picture, personal details and password.
+### Settings Page
+Allows the user to update their profile picture, personal details, and password.
 ![App Screenshot](screenshot/12.png)
 ![App Screenshot](screenshot/13.png)
 
-Chat Application
+### Chat Application
 ![App Screenshot](screenshot/14.png)
 
-[Download and watch the demo of complete chat Application Part](videos/ChatDemo.mp4)
+[Download and watch the demo of the complete chat application](videos/ChatDemo.mp4).
 
-Update :- Also added google signin using passport.js
+### Google Sign-In
+Added Google Sign-In functionality using `passport.js`.
 ![App Screenshot](screenshot/15.png)
