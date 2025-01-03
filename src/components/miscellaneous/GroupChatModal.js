@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import UserBadgeItem from "../userAvatar/UserBadgeItem";
@@ -24,7 +24,7 @@ const GroupChatModal = ({ children }) => {
 
 const ENDPOINT = "http://localhost:4000";
 let socket;
-socket = io(ENDPOINT);
+
   const onOpen = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
 
@@ -61,6 +61,7 @@ socket = io(ENDPOINT);
   };
 
   const handleSubmit = async () => {
+   
     if (!groupChatName || !selectedUsers) {
       alert("Please fill all the fields");
       return;
@@ -90,6 +91,10 @@ socket = io(ENDPOINT);
       alert("Failed to create the chat!");
     }
   };
+
+  useEffect(()=>{
+    socket = io(ENDPOINT);
+  })
 
   return (
     <>

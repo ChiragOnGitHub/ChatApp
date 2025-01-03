@@ -72,7 +72,6 @@ const fetchChats = async (req, res) => {
             path: "latestMessage.sender",
             select: "firstName lastName image email",
         });
-
         res.status(200).send(results);
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -169,8 +168,11 @@ const updateHistoryVisibility = async (req, res) => {
         chat.showHistoryToNewMembers = showHistoryToNewMembers;
         await chat.save();
 
+        const Newchat=await Chat.findById(chatId).populate("users", "-password").populate("groupAdmin", "-password")
+        .populate("latestMessage");
+
         // Return the updated chat
-        res.json(chat);
+        res.json(Newchat);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }

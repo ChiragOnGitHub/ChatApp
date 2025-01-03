@@ -30,6 +30,7 @@ export default function Sidebar() {
                 <div className="flex flex-col">
                     <SidebarLink link={{ name: "My Profile", path: "/dashboard/my-profile" }} iconName="VscAccount" />
                     <SidebarLink link={{ name: "Chat", path: "/dashboard/Chat" }} iconName="VscMail" />
+                    <SidebarLink link={{ name: "Document", path: "/documents" }} iconName="VscOutput" />
                 </div>
                 <div className="mx-auto mt-6 mb-6 h-[1px] w-10/12 bg-richblack-700" />
 

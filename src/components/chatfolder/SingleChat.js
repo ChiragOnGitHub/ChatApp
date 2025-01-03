@@ -18,7 +18,7 @@ import { ChatState } from "../../Context/ChatProvider";
 const ENDPOINT = "http://localhost:4000";
 let socket, selectedChatCompare;
 
-const SingleChat = ({ fetchAgain, setFetchAgain }) => {
+const SingleChat = ({ fetchAgain, setFetchAgain ,setlhsFetchAgain}) => {
     
     
   const [messages, setMessages] = useState([]);
@@ -101,12 +101,54 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         );
         // console.log(data);
         setMessages([...messages, data]);
+        setlhsFetchAgain((prev=>!prev));
         socket.emit("new message", data);
+        // setFetchAgain((prev) => !prev);
       } catch (error) {
         alert("Failed to send the Message");
       }
     }
 };
+
+const uploadFile = async (file) => {
+    try {
+      const fileName=file.name ;
+
+      const res = await axios.post(BASE_URL + "/s3Url",{ fileName});
+      const { key, uploadURL } = res.data;
+      
+
+      await fetch(uploadURL, {
+        method: "PUT",
+        headers: {
+          "Content-Type": file.type,
+        },
+        body: file
+      })
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+
+        const { data } = await axios.post(
+            BASE_URL+"/message",
+            {
+                content: key,
+                chatId: selectedChat,
+                isFile:true,
+            },
+            config
+        );
+
+      setMessages([...messages, data]);
+      socket.emit("new message", data);
+      setlhsFetchAgain((prev=>!prev));
+    } catch (error) {
+      alert("Failed to upload the file");
+    }
+  };
 
 
 
@@ -127,20 +169,23 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             if (!notification.some((msg) => msg._id === newMessageRecieved._id)) {
                 setNotification([newMessageRecieved, ...notification]);
                 setFetchAgain((prev) => !prev);
+                setlhsFetchAgain((prev)=>!prev);
             }
         } else {
             // Add the new message to the current chat's messages
             setMessages((prevMessages) => [...prevMessages, newMessageRecieved]);
-            setFetchAgain((prev) => !prev);
+            setlhsFetchAgain((prev)=>!prev);
+            // setFetchAgain((prev) => !prev);
         }
     });
-
-
+    
+    
     // Handle group updates
     socket.on("group update", (updatedGroup) => {
         setFetchAgain((prev) => !prev);
+        setlhsFetchAgain((prev)=>!prev);
     });
-
+    
     
     socket.on("group update again", (updatedGroup) => {
         
@@ -154,6 +199,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         }
         
         setFetchAgain((prev) => !prev);
+        setlhsFetchAgain((prev)=>!prev);
     });
     
     
@@ -222,6 +268,7 @@ const typingHandler = (e) => {
                   fetchMessages={fetchMessages}
                   fetchAgain={fetchAgain}
                   setFetchAgain={setFetchAgain}
+                  setlhsFetchAgain={setlhsFetchAgain}
                 />
               </>
             ) : (
@@ -267,6 +314,20 @@ const typingHandler = (e) => {
                 >
                     😀
                 </button>
+                <label htmlFor="file-input" className="text-white bg-richblue-700 p-2 rounded-md cursor-pointer">
+                  📎
+                  <input
+                    id="file-input"
+                    type="file"
+                    className="hidden"
+                    onChange={(e) =>{
+                        if (e.target.files[0]) {
+                            uploadFile(e.target.files[0]); // Call the upload function
+                            e.target.value = null; // Reset the input value to allow selecting the same file again
+                        }
+                    }}
+                  />
+                </label>
                 </div>
                 {showEmojiPicker && (
                 <div className="absolute bottom-12 left-0 z-50">

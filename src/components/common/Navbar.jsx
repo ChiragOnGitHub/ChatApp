@@ -41,7 +41,7 @@ const Navbar = () => {
 
 
   return (
-    <div className={` flex h-16 items-center justify-center border-b-[1px] border-b-richblack-700
+    <div className={`navbarHere flex h-16 items-center justify-center border-b-[1px] border-b-richblack-700
     ${ location.pathname === "/about" ? "bg-richblack-700" : "" } transition-all duration-200`}>
 
         <div className='flex w-11/12 max-w-maxContent items-center justify-between'>
@@ -184,6 +184,19 @@ const Navbar = () => {
                                                 }`}
                                             >
                                                 Chat
+                                            </p>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/documents" onClick={toggleMenu}>
+                                            <p
+                                                className={`flex items-center gap-x-2 ${
+                                                    matchRoute("/documents")
+                                                    ? "text-yellow-25"
+                                                    : "text-richblack-25"
+                                                }`}
+                                            >
+                                                Document
                                             </p>
                                         </Link>
                                     </li>

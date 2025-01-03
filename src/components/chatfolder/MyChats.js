@@ -7,7 +7,7 @@ import GroupChatModal from "../miscellaneous/GroupChatModal";
 
 import { ChatState } from "../../Context/ChatProvider";
 
-const MyChats = ({ fetchAgain }) => {
+const MyChats = ({ lhsfetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
   const dispatch = useDispatch();
   
@@ -33,7 +33,7 @@ const MyChats = ({ fetchAgain }) => {
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("user")));
     fetchChats();
-  }, [fetchAgain]);
+  }, [lhsfetchAgain]);
 
   return (
     <div
@@ -78,7 +78,7 @@ const MyChats = ({ fetchAgain }) => {
                 key={chat._id}
                 onClick={() => setSelectedChat(chat)}
                 className={`cursor-pointer px-3 py-2 rounded-lg mb-2 ${
-                  selectedChat === chat ? "bg-yellow-300 text-white" : "bg-richblue-500 text-white"
+                  (selectedChat?._id && (selectedChat._id === chat?._id)) ? "bg-yellow-300 text-white" : "bg-richblue-500 text-white"
                 }`}
               >
                 <p>
@@ -89,9 +89,9 @@ const MyChats = ({ fetchAgain }) => {
                 {chat.latestMessage && (
                   <p className="text-xs mt-1">
                     <b>{chat.latestMessage.sender.firstName+" "+chat.latestMessage.sender.lastName}:</b> {" "}
-                    {chat.latestMessage.content.length > 20
+                    {chat.latestMessage?.isFile ? "File" :(chat.latestMessage.content.length > 20
                       ? chat.latestMessage.content.substring(0, 20) + "..."
-                      : chat.latestMessage.content}
+                      : chat.latestMessage.content)}
                   </p>
                 )}
               </div>

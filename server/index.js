@@ -15,9 +15,12 @@ const googleRoutes = require("./routes/googleroutes");
 const database = require("./config/database");
 const cookieParser = require("cookie-parser");
 const {cloudinaryConnect } = require("./config/cloudinary");
+const { generateUploadURL,generateDownloadUrl } =require('./config/s3');
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
 const dotenv = require("dotenv");
+
+const Document = require("./models/Document")
 
 dotenv.config();
 const PORT = process.env.PORT || 4000;
@@ -63,6 +66,113 @@ app.use("/api/v1/reach", contactUsRoute);
 app.use("/api/v1/chat", chatRoutes);
 app.use("/api/v1/message", messageRoutes);
 
+// Get change log for a document
+app.get("/api/v1/documents/:id", async (req, res) => {
+    try {
+
+        const document = await Document.findById(req.params.id).populate("changeLog.user", "firstName lastName  email");
+       
+        if (!document) return res.status(404).json({ message: "Document not found" });
+
+        
+        let textContent = "";
+        let interpretDelta = (delta) => {
+            if (!delta || !delta.ops) return "No details available.";
+            let index = 0; 
+            let changes = []; // To store the change log output
+            
+            delta.ops.forEach((op) => {
+              if (op.retain) {
+                // Retain the specified number of characters, increment the index accordingly
+                index += op.retain;
+              }
+          
+              if (op.insert) {
+                // Insert at the current position
+                const insertText = op.insert;
+                const formattedInsert = insertText
+                .replace(/ /g, "[Space]")
+                .replace(/\n/g, "[NewLine]")
+                .replace(/\t/g, "[Tab]"); // Format whitespaces for display
+                textContent = textContent.slice(0, index) + insertText + textContent.slice(index);
+                index += insertText.length; // Move the index forward by the length of the inserted text
+                changes.push(`Inserted: "${formattedInsert}" at position ${index - insertText.length}`);
+              }
+          
+              if (op.delete) {
+                // Delete the specified number of characters starting from the current position
+                const deletedText = textContent.slice(index, index + op.delete);
+                const formattedDelete = deletedText
+                .replace(/ /g, "[Space]")
+                .replace(/\n/g, "[NewLine]")
+                .replace(/\t/g, "[Tab]"); // Format whitespaces for display
+                textContent = textContent.slice(0, index) + textContent.slice(index + op.delete);
+                changes.push(`Deleted: "${formattedDelete}" from position ${index}`);
+              }
+            });
+          
+            return changes.join("\n");
+          };
+          
+      
+          const changeLogWithDetails = document.changeLog.map(log => ({
+            user: log.user,
+            timestamp: log.timestamp,
+            changes: interpretDelta(log.delta),
+          }));
+
+        res.json(changeLogWithDetails);
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error });
+    }
+});
+
+app.post('/api/v1/s3Url', async (req, res) => {
+    try {
+        const { fileName } = req.body;
+      const { uploadURL, key } = await generateUploadURL(fileName);
+      res.status(200).json({
+        success: true,
+        uploadURL,
+        key,
+      });
+    } catch (error) {
+      console.error('Error in upload URL endpoint:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to generate upload URL. Please try again later.',
+      });
+    }
+  });
+  
+  app.get('/api/v1/s3Url/download', async (req, res) => {
+    try {
+      const key = req.query.fileUrl;
+  
+      if (!key) {
+        return res.status(400).json({
+          success: false,
+          message: 'File URL is required.',
+        });
+      }
+  
+      const url = await generateDownloadUrl(key);
+      
+  
+      res.status(200).json({
+        success: true,
+        url,
+      });
+    } catch (error) {
+      console.error('Error in download URL endpoint:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to generate download URL. Please try again later.',
+      });
+    }
+  });
+  
+  
 
 //default route
 app.get("/", (req, res) => {
@@ -78,12 +188,14 @@ const server=app.listen(PORT, () => {
 
 // const server = http.createServer(app); // Create an HTTP server using the Express app
 const io = socketIo(server, { // Attach Socket.IO to the server
+    maxHttpBufferSize: 1e6,
 	cors: {
 		origin: "http://localhost:3000",
         credentials: true,
 	}
 });
 
+const defaultValue = ""
 // Socket.IO setup
 io.on("connection", (socket) => {
     socket.on("setup", (userData) => {
@@ -118,9 +230,73 @@ io.on("connection", (socket) => {
         });
       });
 
+    socket.on("get-document", async documentId => {
+        if (!documentId) {
+            console.error("No documentId provided for get-document");
+            return;
+          }
+        const document = await findOrCreateDocument(documentId);
+        socket.join(documentId)
+        socket.emit("load-document", document.data)
+
+        socket.removeAllListeners("send-changes");
+        socket.on("send-changes",async ({delta,userId}) => {
+            if (!documentId) {
+                console.error("No documentId provided for send-changes");
+                return;
+            }
+            socket.to(documentId).emit("receive-changes", delta);
+            try {
+                // Update the changeLog in the database for the specific document
+                await Document.findByIdAndUpdate(documentId, {
+                $push: {
+                    changeLog: {
+                    user: userId,
+                    delta,
+                    },
+                },
+                lastModifiedBy: userId,
+                });
+            } catch (error) {
+                console.error(`Error updating changeLog for document ${documentId}:`, error);
+            }
+        })
+    
+        socket.removeAllListeners("save-document");
+        socket.on("save-document", async ({ data, userId }) => {
+            if (!documentId) {
+              console.error("No documentId provided");
+              return;
+            }
+          
+            try {
+              await Document.findByIdAndUpdate(documentId, {
+                data,
+                lastModifiedBy: userId,
+              });
+            } catch (error) {
+              console.error("Error updating document:", error);
+            }
+          });
+          
+    })
+
     socket.on("disconnect", () => {
         console.log("USER DISCONNECTED");
       });
   
   }
 );
+
+
+async function findOrCreateDocument(id) {
+    if (!id) {
+        throw new Error("Document ID is required.");
+    }
+
+    const document = await Document.findById(id);
+    if (document) return document;
+
+    return await Document.create({ _id: id, data: "" });
+}
+  

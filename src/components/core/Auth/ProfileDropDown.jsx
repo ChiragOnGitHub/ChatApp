@@ -1,7 +1,7 @@
 import { useRef, useState } from "react"
 import { AiOutlineCaretDown } from "react-icons/ai"
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
-import { VscDashboard, VscSignOut } from "react-icons/vsc"
+import { VscDashboard, VscSignOut ,VscOutput} from "react-icons/vsc"
 import { useDispatch, useSelector } from "react-redux"
 import { Link,useNavigate } from "react-router-dom"
 
@@ -49,6 +49,12 @@ export default function ProfileDropdown() {
                             <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25">
                                 <IoChatbubbleEllipsesOutline className="text-lg" />
                                 Chat
+                            </div>
+                        </Link>
+                        <Link to="/documents" onClick={() => setOpen(false)}>
+                            <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25">
+                                <VscOutput className="text-lg" />
+                                Document
                             </div>
                         </Link>
                         <div

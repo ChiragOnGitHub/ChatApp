@@ -8,10 +8,9 @@ import io from "socket.io-client";
 
 import { ChatState } from "../../Context/ChatProvider";
 
-const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
+const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain,setlhsFetchAgain }) => {
     const ENDPOINT = "http://localhost:4000";
     let socket;
-    socket = io(ENDPOINT);
     const [groupChatName, setGroupChatName] = useState("");
     const [search, setSearch] = useState("");
     const [searchResult, setSearchResult] = useState([]);
@@ -31,6 +30,9 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
             setShowHistory(selectedChat.showHistoryToNewMembers);
         }
     }, [selectedChat]);
+    useEffect(() => {
+        socket = io(ENDPOINT);
+    });
 
     const handleSearch = async (query) => {
         setSearch(query);
@@ -74,6 +76,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
             setSelectedChat(data);
             fetchMessages();
             socket.emit("update group", data);
+            setlhsFetchAgain((prev)=>!prev);
             setFetchAgain(!fetchAgain);
             setRenameLoading(false);
             setGroupChatName("");
@@ -107,6 +110,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
 
             setSelectedChat(data);
             setFetchAgain(!fetchAgain);
+            setlhsFetchAgain((prev)=>!prev);
             socket.emit("update group", data);
             setLoading(false);
         } catch (error) {
@@ -143,6 +147,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
             socket.emit("update group", data);
             fetchMessages();
             setFetchAgain(!fetchAgain);
+            setlhsFetchAgain((prev)=>!prev);
             setLoading(false);
         } catch (error) {
             alert(error.response.data.message);
@@ -174,6 +179,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
             setSelectedChat(data);
             socket.emit("update group", data);
             setFetchAgain(!fetchAgain);
+            setlhsFetchAgain((prev)=>!prev);
             setShowHistory(!showHistory);
         } catch (error) {
             alert(error.response.data.message);

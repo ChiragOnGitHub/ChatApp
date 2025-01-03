@@ -5,7 +5,7 @@ import SingleChat from "./SingleChat";
 
 import { ChatState } from "../../Context/ChatProvider";
 
-const Chatbox = ({ fetchAgain, setFetchAgain }) => {
+const Chatbox = ({ fetchAgain, setFetchAgain ,setlhsFetchAgain}) => {
 //   const { selectedChat } = useSelector((state) => state.chat);
   const { selectedChat } = ChatState();
 
@@ -17,7 +17,7 @@ const Chatbox = ({ fetchAgain, setFetchAgain }) => {
         rounded-lg border  
       `}
     >
-      <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
+      <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} setlhsFetchAgain={setlhsFetchAgain} />
     </div>
   );
 };

@@ -1,9 +1,11 @@
 import "./App.css";
-import { Route,Routes } from "react-router-dom";
+import { Route,Routes ,Navigate} from "react-router-dom";
+import { v4 as uuidV4 } from "uuid"
 
 import Home from "./pages/Home"
 import Navbar from "./components/common/Navbar"
 import OpenRoute from "./components/core/Auth/OpenRoute"
+import TextEditor from "./components/Texteditor/TextEditor";
 
 import Login from "./pages/Login"
 import Signup from "./pages/Signup"
@@ -21,6 +23,8 @@ import Settings from "./components/core/Dashboard/Settings/index"
 import GoogleAuthRedirect from "./components/GoogleAuthRedirect"
 
 import PrivateRoute from "./components/core/Auth/PrivateRoute";
+import ValidateDocumentRoute from "./components/Texteditor/ValidateDocumentRoute";
+import ChangeLog from "./components/Texteditor/changelog";
 
 function App() {
   return (
@@ -79,6 +83,25 @@ function App() {
                 />  
 
             
+            <Route path="documents/" element={
+                <Navigate to={`${uuidV4()}`} />
+                } 
+            />
+            <Route path="documents/:id" element={
+                <ValidateDocumentRoute>
+                        <PrivateRoute>
+                            <TextEditor />
+                        </PrivateRoute>
+                </ValidateDocumentRoute>
+                } 
+            />
+            <Route path="documents/changelog/:id" element={
+                <PrivateRoute>
+                    <ChangeLog />
+                </PrivateRoute>
+                } 
+            />
+    
             <Route path="dashboard/Chat" element={
                 <PrivateRoute>
                     <ChatPage />

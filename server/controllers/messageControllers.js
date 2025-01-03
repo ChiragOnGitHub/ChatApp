@@ -64,18 +64,29 @@ const sendMessage = asyncHandler(async (req, res) => {
     console.log("Invalid data passed into request");
     return res.sendStatus(400);
   }
-
-  var newMessage = {
-    sender: req.user._id,
-    content: content,
-    chat: chatId,
-  };
+  if(req.body?.isFile && req.body.isFile  ){
+    var newMessage = {
+        sender: req.user._id,
+        content: content,
+        chat: chatId,
+        isFile:true,
+      };
+  }
+  else{
+    var newMessage = {
+        sender: req.user._id,
+        content: content,
+        chat: chatId,
+        isFile:false,
+      };
+  }
+  
 
   try {
     var message = await Message.create(newMessage);
 
     // maybe need to remove execPopulate
-    message = await message.populate("sender", "name pic");
+    message = await message.populate("sender", "firstName lastName image");
     message = await message.populate("chat");
     message = await User.populate(message, {
       path: "chat.users",
