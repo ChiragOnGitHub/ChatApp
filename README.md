@@ -139,7 +139,7 @@ Enable users to upload and download files within a workspace using aws s3 bucket
 Integrate real-time collaborative document editing within workspaces.
 Support simultaneous editing by multiple users with change tracking.
 
-[Download and watch the demo of the complete collaborative document editing](screenshot/DocumentDemo.mp4.mp4).
+[Download and watch the demo of the complete collaborative document editing](screenshot/DocumentDemo.mp4).
 
 ### Google Sign-In
 Added Google Sign-In functionality using `passport.js`.
