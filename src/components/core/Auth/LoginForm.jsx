@@ -9,7 +9,7 @@ import { FcGoogle } from "react-icons/fc"
 function LoginForm() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const BASE_URL = process.env.REACT_APP_URL;
+    const BASE_URL = process.env.REACT_APP_BASE_URL;
 
     const [formData, setFormData] = useState({
         email: "",

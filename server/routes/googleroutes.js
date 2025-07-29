@@ -9,7 +9,7 @@ router.get('/',
   
   // Google Callback Route
 router.get('/callback',
-    passport.authenticate('google', { failureRedirect: 'http://localhost:3000/login' }),
+    passport.authenticate('google', { failureRedirect: 'https://realsync.vercel.app/login' }),
     async (req, res) => {
         // Generate JWT Token for the user
         let user= await req.user.populate("additionalDetails");
@@ -32,7 +32,7 @@ router.get('/callback',
        
 
         // Redirect to the dashboard
-        res.redirect('http://localhost:3000/google-auth');
+        res.redirect('https://realsync.vercel.app/google-auth');
     }
 );
 
