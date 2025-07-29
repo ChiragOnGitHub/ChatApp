@@ -15,7 +15,8 @@ import EmojiPicker from "emoji-picker-react";
 
 import { ChatState } from "../../Context/ChatProvider";
 
-const ENDPOINT = "http://localhost:4000";
+// const ENDPOINT = "http://localhost:4000";
+const ENDPOINT = process.env.REACT_APP_URL;
 let socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain ,setlhsFetchAgain}) => {

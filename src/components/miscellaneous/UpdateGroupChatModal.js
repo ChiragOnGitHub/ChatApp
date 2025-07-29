@@ -9,7 +9,7 @@ import io from "socket.io-client";
 import { ChatState } from "../../Context/ChatProvider";
 
 const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain,setlhsFetchAgain }) => {
-    const ENDPOINT = "http://localhost:4000";
+    const ENDPOINT = process.env.REACT_APP_URL;
     let socket;
     const [groupChatName, setGroupChatName] = useState("");
     const [search, setSearch] = useState("");

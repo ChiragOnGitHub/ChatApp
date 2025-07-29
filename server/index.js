@@ -34,7 +34,7 @@ app.use(cookieParser());
 
 app.use(
 	cors({
-		origin:"http://localhost:3000",
+		origin:"*",
 		credentials:true,
 	})
 )
@@ -190,7 +190,7 @@ const server=app.listen(PORT, () => {
 const io = socketIo(server, { // Attach Socket.IO to the server
     maxHttpBufferSize: 1e6,
 	cors: {
-		origin: "http://localhost:3000",
+		origin: "*",
         credentials: true,
 	}
 });

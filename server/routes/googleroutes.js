@@ -12,7 +12,7 @@ router.get('/callback',
     passport.authenticate('google', { failureRedirect: 'http://localhost:3000/login' }),
     async (req, res) => {
         // Generate JWT Token for the user
-        user= await req.user.populate("additionalDetails");
+        let user= await req.user.populate("additionalDetails");
         const payload = {
             email: user.email,
             id: user._id,

@@ -30,7 +30,7 @@ export default function TextEditor() {
   const userId = user._id;
 
   useEffect(() => {
-    const s = io("http://localhost:4000");
+    const s = io(process.env.REACT_APP_URL);
     setSocket(s);
 
     return () => {

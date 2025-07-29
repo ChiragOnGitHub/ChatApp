@@ -91,7 +91,7 @@ function LoginForm() {
 
             {/* Google Login Button */}
             <a 
-                href="http://localhost:4000/api/v1/google" 
+                href="http://localhost:4000/api/v1/google"
                 className="mt-4 flex items-center justify-center gap-2 rounded-[8px] bg-white py-[8px] px-[12px] font-medium text-richblack-900 shadow-md"
             >
                 <FcGoogle fontSize={20} />

@@ -22,7 +22,7 @@ const GroupChatModal = ({ children }) => {
   const { user } = useSelector((state) => state.profile);
 //   const dispatch = useDispatch();
 
-const ENDPOINT = "http://localhost:4000";
+const ENDPOINT = process.env.REACT_APP_URL;
 let socket;
 
   const onOpen = () => setIsOpen(true);
