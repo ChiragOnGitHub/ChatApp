@@ -2,6 +2,8 @@ const express = require("express")
 const router = express.Router()
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
+const dotenv = require("dotenv");
+dotenv.config();
 
 router.get('/',
     passport.authenticate('google', { scope: ['profile', 'email'] })
@@ -9,7 +11,7 @@ router.get('/',
   
   // Google Callback Route
 router.get('/callback',
-    passport.authenticate('google', { failureRedirect: 'https://realsync.vercel.app/login' }),
+    passport.authenticate('google', { failureRedirect: `${process.env.FRONTEND_LINK}/login` }),
     async (req, res) => {
         // Generate JWT Token for the user
         let user= await req.user.populate("additionalDetails");
@@ -34,7 +36,7 @@ router.get('/callback',
         // Redirect to the dashboard
         // At end of the callback
         const encodedUser = encodeURIComponent(JSON.stringify(user));
-        res.redirect(`https://realsync.vercel.app/google-auth?token=${encodedUser}`);
+        res.redirect(`${process.env.FRONTEND_LINK}/google-auth?token=${encodedUser}`);
     }
 );
 

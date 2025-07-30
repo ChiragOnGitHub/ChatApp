@@ -15,15 +15,17 @@ const GoogleAuthRedirect = () => {
         // Read token and user from cookies
         // const token = Cookies.get("token");
         // const user = Cookies.get("user");
-        
+
         const urlParams = new URLSearchParams(window.location.search);
         const rawUser = urlParams.get("user");
+        console.log("URL", window.location.href);
+        console.log("rawUser", rawUser);
         if (!rawUser) {
             console.log("user absent");
             navigate("/login");
             return;
         }
-        const parsedUser = JSON.parse(rawUser);
+        const parsedUser = JSON.parse(decodeURIComponent(rawUser));
         console.log(parsedUser);
         
         

@@ -8,7 +8,7 @@ dotenv.config();
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: 'https://chatapp-6r9m.onrender.com/api/v1/google/callback',
+    callbackURL: `${process.env.SERVER_LINK}/api/v1/google/callback1`,
   },
   async (accessToken, refreshToken, profile, done) => {
     try {
