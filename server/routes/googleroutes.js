@@ -21,6 +21,7 @@ router.get('/callback',
             accountType:user.accountType,
         }
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
+        user = user.toObject(); 
         user.token = token;
         user.password= undefined;
 

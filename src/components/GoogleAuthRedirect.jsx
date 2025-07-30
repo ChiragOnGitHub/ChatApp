@@ -17,9 +17,9 @@ const GoogleAuthRedirect = () => {
         // const user = Cookies.get("user");
 
         const urlParams = new URLSearchParams(window.location.search);
-        const rawUser = urlParams.get("user");
-        console.log("URL", window.location.href);
-        console.log("rawUser", rawUser);
+        const rawUser = urlParams.get("token");
+        // console.log("URL", window.location.href);
+        // console.log("rawUser", rawUser);
         if (!rawUser) {
             console.log("user absent");
             navigate("/login");
