@@ -14,13 +14,16 @@ const GoogleAuthRedirect = () => {
       try {
         // Read token and user from cookies
         // const token = Cookies.get("token");
-        const user = Cookies.get("user");
-        if (!user) {
+        // const user = Cookies.get("user");
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const rawUser = urlParams.get("user");
+        if (!rawUser) {
             console.log("user absent");
             navigate("/login");
             return;
         }
-        const parsedUser = JSON.parse(user);
+        const parsedUser = JSON.parse(rawUser);
         console.log(parsedUser);
         
         
