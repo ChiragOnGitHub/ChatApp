@@ -24,9 +24,9 @@ router.get('/callback',
 
         const options = {
             expires: new Date(Date.now() + 3*24*60*60*1000),
-            httpOnly:true,
-            secure: false, // Use true in production with HTTPS
-            sameSite: 'lax', // Allows cookies to be sent across subdomains
+            httpOnly:false,
+            secure: true, // Use true in production with HTTPS
+            sameSite: 'None', // Allows cookies to be sent across subdomains
         }
         res.cookie("user", JSON.stringify(user), { ...options, httpOnly: false }); // Non-httpOnly for client-side access
        

@@ -34,7 +34,7 @@ app.use(cookieParser());
 
 app.use(
 	cors({
-		origin:"*",
+		origin:"https://realsync.vercel.app",
 		credentials:true,
 	})
 )
